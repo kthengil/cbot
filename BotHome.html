@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chat-container {
+    width: 480px; /* Adjust the width as needed */
+    height: 400px; /* Adjust the height as needed */
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin: 20px auto;
+    float:left;
+}
+
+#chat-content {
+    height: 100%;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.user-message {
+    color: blue; /* Customize the color as needed */
+}
+
+.bot-message {
+    color: green; /* Customize the color as needed */
+}
+
+#user-input {
+    width: 400px;
+    padding: 5px;
+    float:inline-start;
+}
+
+#send-btn {
+    padding: 5px 10px;
+}
+
+.column {
+  float: left;
+  width: 20%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.blank-line {
+    height: 10px; /* Adjust the height as needed */
+    width: 100%;
+}
+
+.menu-button-wrapper {
+    display: block; /* Display buttons on separate lines */
+    margin-bottom: 5px; /* Adjust spacing between buttons */
+}
+    </style>
+</head>
+<body>
+<div class=""row">
+    <div class="column">
+    <h1>Chatbot</h1>
+    <div id="chat-container">
+        <div id="chat-content">
+            <!-- Messages and buttons will be displayed here -->
+            <div id="messages-container"></div>
+            <div id="menu-buttons-container"></div>
+        </div>
+       
+      
+    </div>
+
+    <div>
+        <input type="text" id="user-input" placeholder="Type your message..." autofocus>
+        <button id="send-btn">Send</button>
+    </div>
+</div>
+</div>
+<script src="static/bot.js"></script>
+</body>
+</html>
