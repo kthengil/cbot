@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        /* Style for user's messages */
+        .user-message {
+            color: blue;
+        }
+        
+        /* Style for chatbot's messages */
+        .chatbot-message {
+            color: green;
+        }
+        
+        /* Chat container styles */
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div class="chat-container">
+        {% for message in result %}
+            {% if loop.index is even %}
+                <p class="user-message">{{ message }}</p>
+            {% else %}
+                <p class="chatbot-message">{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <form method="post" action="/parse">
+        <input type="text" name="value1" id="chat-input" placeholder="Type a message...">
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>
+
+
+
+#################
+
+from flask import Flask, render_template, request, jsonify
+import os, sys, requests, json
+from random import randint
+
+app = Flask(__name__)
+
+# Define the initial greeting message
+initial_greeting = "Hi User"
+
+@app.route('/')
+def home():
+    # Pass the initial greeting message to the template
+    return render_template('index.html', result=[initial_greeting])
+
+@app.route('/parse', methods=['POST', 'GET'])
+def extract():
+    text = str(request.form.get('value1'))
+    payload = json.dumps({"sender": "Rasa", "message": text})
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    response = requests.request("POST", url="http://localhost:5005/webhooks/rest/webhook", headers=headers, data=payload)
+    response = response.json()
+    resp = [initial_greeting]  # Include the initial greeting in the response
+    for i in range(len(response)):
+        try:
+            resp.append(response[i]['text'])
+        except:
+            continue
+    result = resp
+    return render_template('index.html', result=result, text=text)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
